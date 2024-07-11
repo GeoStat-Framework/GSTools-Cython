@@ -2,7 +2,7 @@
 requires = [
     "setuptools>=64",
     "setuptools_scm>=7",
-    "numpy>=2.0.0rc1,<2.3; python_version >= '3.9'",
+    "numpy>=2.0.0rc1; python_version >= '3.9'",
     "oldest-supported-numpy; python_version < '3.9'",
     "Cython>=3.0.10,<3.1.0",
     "extension-helpers>=1",
@@ -11,8 +11,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 requires-python = ">=3.8"
-name = "gstools"
-description = "GSTools: A geostatistical toolbox."
+name = "gstools_cython"
+description = "Cython backend for GSTools."
 authors = [
     {name = "Sebastian Müller, Lennart Schüler", email = "info@geostat-framework.org"},
 ]
@@ -46,12 +46,7 @@ classifiers = [
     "Topic :: Utilities",
 ]
 dependencies = [
-    "emcee>=3.0.0",
-    "hankel>=1.0.0",
-    "meshio>=5.1.0",
     "numpy>=1.20.0",
-    "pyevtk>=1.1.1",
-    "scipy>=1.1.0",
 ]
 
 [project.optional-dependencies]
@@ -67,11 +62,6 @@ doc = [
     "sphinx-rtd-theme>=2",
     "sphinxcontrib-youtube>=1.1",
 ]
-plotting = [
-    "matplotlib>=3.7",
-    "pyvista>=0.40",
-]
-rust = ["gstools_core>=0.2.0,<1"]
 test = ["pytest-cov>=3"]
 lint = [
     "black>=24",
@@ -81,18 +71,18 @@ lint = [
 ]
 
 [project.urls]
-Changelog = "https://github.com/GeoStat-Framework/GSTools/blob/main/CHANGELOG.md"
+Changelog = "https://github.com/GeoStat-Framework/GSTools-Cython/blob/main/CHANGELOG.md"
 Conda-Forge = "https://anaconda.org/conda-forge/gstools"
 Documentation = "https://gstools.readthedocs.io"
 Homepage = "https://geostat-framework.org/#gstools"
-Source = "https://github.com/GeoStat-Framework/GSTools"
-Tracker = "https://github.com/GeoStat-Framework/GSTools/issues"
+Source = "https://github.com/GeoStat-Framework/GSTools-Cython"
+Tracker = "https://github.com/GeoStat-Framework/GSTools-Cython/issues"
 
 [tool.setuptools]
 license-files = ["LICENSE"]
 
 [tool.setuptools_scm]
-write_to = "src/gstools/_version.py"
+write_to = "src/gstools_cython/_version.py"
 write_to_template = "__version__ = '{version}'"
 local_scheme = "no-local-version"
 fallback_version = "0.0.0.dev0"
@@ -114,13 +104,11 @@ target-version = [
 
 [tool.coverage]
     [tool.coverage.run]
-    source = ["gstools"]
+    source = ["gstools_cython"]
     omit = [
         "*docs*",
         "*examples*",
         "*tests*",
-        "*/src/gstools/covmodel/plot.py",
-        "*/src/gstools/field/plot.py",
     ]
 
     [tool.coverage.report]

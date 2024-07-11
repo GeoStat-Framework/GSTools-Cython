@@ -46,11 +46,11 @@ jobs:
 
       - name: pylint check
         run: |
-          python -m pylint src/gstools/
+          python -m pylint src/gstools_cython/
 
       - name: cython-lint check
         run: |
-          cython-lint src/gstools/
+          cython-lint src/gstools_cython/
 
   build_wheels:
     name: wheels for ${{ matrix.os }}
@@ -112,7 +112,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install build "coveralls>=3.0.0"
 
-      - name: Install GSTools
+      - name: Install GSTools-Cython
         env:
           GSTOOLS_BUILD_PARALLEL: 1
         run: |
@@ -124,7 +124,7 @@ jobs:
         run: |
           pip install "numpy${{ matrix.ver.np }}" "scipy${{ matrix.ver.sp }}"
           python -m pytest --cov gstools --cov-report term-missing -v tests/
-          python -m coveralls --service=github
+          # python -m coveralls --service=github
 
       - name: Build sdist
         run: |

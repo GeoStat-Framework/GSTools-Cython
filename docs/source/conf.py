@@ -33,7 +33,7 @@ warnings.filterwarnings(
 # local module should not be added to sys path if it's installed on RTFD
 # see: https://stackoverflow.com/a/31882049/6696397
 # sys.path.insert(0, os.path.abspath("../../"))
-from gstools import __version__ as ver
+from gstools_cython import __version__ as ver
 
 
 def skip(app, what, name, obj, skip, options):
@@ -109,7 +109,7 @@ master_doc = "contents"
 
 # General information about the project.
 curr_year = datetime.datetime.now().year
-project = "GSTools"
+project = "GSTools-Cython"
 copyright = f"2018 - {curr_year}, Sebastian Müller, Lennart Schüler"
 author = "Sebastian Müller, Lennart Schüler"
 
@@ -322,7 +322,7 @@ sphinx_gallery_conf = {
     # directory where function granular galleries are stored
     "backreferences_dir": None,
     # Modules for which function level galleries are created.  In
-    "doc_module": "gstools",
+    "doc_module": "gstools_cython",
     # "first_notebook_cell": (
     #     "%matplotlib inline\n"
     #     "from pyvista import set_plot_theme\n"

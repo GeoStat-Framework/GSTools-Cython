@@ -1,4 +1,4 @@
-"""GSTools: A geostatistical toolbox."""
+"""GSTools-Cython: Cython backend for GSTools."""
 
 import os
 
@@ -10,12 +10,12 @@ from setuptools import Extension, setup
 # cython extensions
 CY_MODULES = [
     Extension(
-        name=f"gstools.{ext}",
-        sources=[os.path.join("src", "gstools", *ext.split(".")) + ".pyx"],
+        name=f"gstools_cython.{ext}",
+        sources=[os.path.join("src", "gstools_cython", ext) + ".pyx"],
         include_dirs=[np.get_include()],
         define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
     )
-    for ext in ["field.summator", "variogram.estimator", "krige.krigesum"]
+    for ext in ["summator", "estimator", "krigesum"]
 ]
 # you can set GSTOOLS_BUILD_PARALLEL=0 or GSTOOLS_BUILD_PARALLEL=1
 open_mp = False
@@ -23,9 +23,9 @@ if int(os.getenv("GSTOOLS_BUILD_PARALLEL", "0")):
     added = [add_openmp_flags_if_available(mod) for mod in CY_MODULES]
     if any(added):
         open_mp = True
-    print(f"## GSTools setup: OpenMP used: {open_mp}")
+    print(f"## GSTools-Cython setup: OpenMP used: {open_mp}")
 else:
-    print("## GSTools setup: OpenMP not wanted by the user.")
+    print("## GSTools-Cython setup: OpenMP not wanted by the user.")
 
 # setup - do not include package data to ignore .pyx files in wheels
 setup(
