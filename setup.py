@@ -15,7 +15,7 @@ CY_MODULES = [
         include_dirs=[np.get_include()],
         define_macros=[("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
     )
-    for ext in ["summator", "estimator", "krigesum"]
+    for ext in ["field", "krige", "variogram"]
 ]
 # you can set GSTOOLS_BUILD_PARALLEL=0 or GSTOOLS_BUILD_PARALLEL=1
 open_mp = False

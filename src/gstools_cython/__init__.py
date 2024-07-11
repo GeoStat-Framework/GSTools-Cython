@@ -15,9 +15,9 @@ Subpackages
 .. autosummary::
    :toctree: api
 
-    estimator
-    krigesum
-    summator
+    field
+    krige
+    variogram
 """
 
 # Hooray!
@@ -30,4 +30,4 @@ except ModuleNotFoundError:  # pragma: no cover
     __version__ = "unknown"
 
 __all__ = ["__version__"]
-__all__ += ["estimator", "krigesum", "summator"]
+__all__ += ["field", "krige", "variogram"]
