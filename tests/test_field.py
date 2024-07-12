@@ -11,11 +11,9 @@ import gstools_cython as gs_cy
 
 
 class TestField(unittest.TestCase):
-    def test_summate(self):
-        ...
+    def test_summate(self): ...
 
-    def test_summate_incompr(self):
-        ...
+    def test_summate_incompr(self): ...
 
 
 if __name__ == "__main__":

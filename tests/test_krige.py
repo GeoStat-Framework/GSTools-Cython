@@ -10,11 +10,9 @@ import gstools_cython as gs_cy
 
 
 class TestKrige(unittest.TestCase):
-    def test_calc_field_krige_and_variance(self):
-        ...
+    def test_calc_field_krige_and_variance(self): ...
 
-    def test_calc_field_krige(self):
-        ...
+    def test_calc_field_krige(self): ...
 
 
 if __name__ == "__main__":
