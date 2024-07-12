@@ -2,6 +2,19 @@
 # distutils: language = c++
 """
 This is the variogram estimater, implemented in cython.
+
+.. currentmodule:: gstools_cython.variogram
+
+Functions
+^^^^^^^^^
+
+.. autosummary::
+   :toctree:
+
+   directional
+   unstructured
+   structured
+   ma_structured
 """
 
 import numpy as np
@@ -199,6 +212,43 @@ def directional(
     str estimator_type='m',
     num_threads=None,
 ):
+    """
+    Directional variogram estimator.
+
+    Parameters
+    ----------
+    f : double[:, :]
+        unstructured random field
+    bin_edges : double[:]
+        edges for the variogram bins
+    pos : double[:, :]
+        the position (d,n) tuple with d dimensions and n points.
+    directions : double[:, :]
+        vectors specifying the directions
+    angles_tol : double, optional
+        angle tolerance around direction vectors in radians, default: PI/8.0
+    bandwidth : double, optional
+        maximal distance to direction vector.
+        negative values used to turn of bandwidth search. Default: -1.0
+    separate_dirs : bint, optional
+        whether the direction bands shouldn't overlap, default: False
+    estimator_type : str, optional
+         the estimator function, possible choices:
+
+            * "m": the standard method of moments of Matheron
+            * "c": an estimator more robust to outliers by Cressie
+
+          Default: "m"
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    variogram : double[:, :]
+        estimated variogram per direction
+    counts : np.int64_t[:, :]
+        counts of samples per bin and direciton
+    """
     if pos.shape[1] != f.shape[1]:
         raise ValueError(f'len(pos) = {pos.shape[1]} != len(f) = {f.shape[1])}')
 
@@ -260,6 +310,41 @@ def unstructured(
     str distance_type='e',
     num_threads=None,
 ):
+    """
+    Omnidirectional variogram estimator.
+
+    Parameters
+    ----------
+    f : double[:, :]
+        unstructured random field
+    bin_edges : double[:]
+        edges for the variogram bins
+    pos : double[:, :]
+        the position (d,n) tuple with d dimensions and n points.
+    estimator_type : str, optional
+         the estimator function, possible choices:
+
+            * "m": the standard method of moments of Matheron
+            * "c": an estimator more robust to outliers by Cressie
+
+          Default: "m"
+    distance_type : str, optional
+         dinstance function type, possible choices:
+
+            * "e": euclidean distance
+            * "h": haversine distance for lat-lon coordinates
+
+          Default: "e"
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    variogram : double[:]
+        estimated variogram
+    counts : np.int64_t[:]
+        counts of samples per bin
+    """
     cdef int dim = pos.shape[0]
     cdef _dist_func distance
 
@@ -314,6 +399,28 @@ def structured(
     str estimator_type='m',
     num_threads=None,
 ):
+    """
+    Variogram estimator for structured fields.
+
+    Parameters
+    ----------
+    f : double[:, :]
+        structured random field
+    estimator_type : str, optional
+         the estimator function, possible choices:
+
+            * "m": the standard method of moments of Matheron
+            * "c": an estimator more robust to outliers by Cressie
+
+          Default: "m"
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    variogram : double[:]
+        estimated variogram
+    """
     cdef _estimator_func estimator_func = choose_estimator_func(estimator_type)
     cdef _normalization_func normalization_func = (
         choose_estimator_normalization(estimator_type)
@@ -346,6 +453,30 @@ def ma_structured(
     str estimator_type='m',
     num_threads=None,
 ):
+    """
+    Variogram estimator for masked structured fields.
+
+    Parameters
+    ----------
+    f : double[:, :]
+        structured random field
+    mask : bint[:, :]
+        mask for the structured random field
+    estimator_type : str, optional
+         the estimator function, possible choices:
+
+            * "m": the standard method of moments of Matheron
+            * "c": an estimator more robust to outliers by Cressie
+
+          Default: "m"
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    variogram : double[:]
+        estimated variogram
+    """
     cdef _estimator_func estimator_func = choose_estimator_func(estimator_type)
     cdef _normalization_func normalization_func = (
         choose_estimator_normalization(estimator_type)

@@ -21,7 +21,7 @@ Subpackages
 """
 
 # Hooray!
-from . import estimator, krigesum, summator
+from . import field, krige, variogram
 
 try:
     from ._version import __version__

@@ -66,9 +66,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",  # parameters look better than with numpydoc only
     "numpydoc",
-    "sphinx_gallery.gen_gallery",
     "m2r2",
-    "sphinxcontrib.youtube",
 ]
 
 # autosummaries from source-files
@@ -217,8 +215,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "GeoStatTools.tex",
-        "GeoStatTools Documentation",
+        "GeoStatTools-Cython.tex",
+        "GeoStatTools-Cython Documentation",
         "Sebastian Müller, Lennart Schüler",
         "manual",
     )
@@ -230,7 +228,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "geostattools", "GeoStatTools Documentation", [author], 1)
+    (master_doc, "geostattools-cython", "GeoStatTools-Cython Documentation", [author], 1)
 ]
 
 
@@ -242,11 +240,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "GeoStatTools",
-        "GeoStatTools Documentation",
+        "GeoStatTools-Cython",
+        "GeoStatTools-Cython Documentation",
         author,
-        "GeoStatTools",
-        "Geo-statistical toolbox.",
+        "GeoStatTools-Cython",
+        "Cython backend for GSTools.",
         "Miscellaneous",
     )
 ]
@@ -260,73 +258,4 @@ suppress_warnings = [
 intersphinx_mapping = {
     "Python": ("https://docs.python.org/", None),
     "NumPy": ("https://numpy.org/doc/stable/", None),
-    "SciPy": ("https://docs.scipy.org/doc/scipy/", None),
-    "matplotlib": ("https://matplotlib.org/stable/", None),
-    "hankel": ("https://hankel.readthedocs.io/en/latest/", None),
-    "emcee": ("https://emcee.readthedocs.io/en/latest/", None),
-}
-
-# -- Sphinx Gallery Options
-from sphinx_gallery.sorting import FileNameSortKey
-
-# Use pyvista's image scraper for example gallery
-# import pyvista
-# https://github.com/tkoyama010/pyvista-doc-translations/blob/85c835a3ada3a2adefac06ba70e15a101ffa9162/conf.py#L21
-# https://github.com/simpeg/discretize/blob/f414dd7ee7c5ba9a141cb2c37d4b71fdc531eae8/docs/conf.py#L334
-# Make sure off screen is set to true when building locally
-# pyvista.OFF_SCREEN = True
-# # necessary when building the sphinx gallery
-# pyvista.BUILDING_GALLERY = True
-# # Optional - set parameters like theme or window size
-# pyvista.set_plot_theme("document")
-
-sphinx_gallery_conf = {
-    # "image_scrapers": ("pyvista", "matplotlib"),
-    "remove_config_comments": True,
-    # only show "print" output as output
-    "capture_repr": (),
-    # path to your examples scripts
-    "examples_dirs": [
-        "../../examples/00_misc/",
-        "../../examples/01_random_field/",
-        "../../examples/02_cov_model/",
-        "../../examples/03_variogram/",
-        "../../examples/04_vector_field/",
-        "../../examples/05_kriging/",
-        "../../examples/06_conditioned_fields/",
-        "../../examples/07_transformations/",
-        "../../examples/08_geo_coordinates/",
-        "../../examples/09_spatio_temporal/",
-        "../../examples/10_normalizer/",
-    ],
-    # path where to save gallery generated examples
-    "gallery_dirs": [
-        "examples/00_misc/",
-        "examples/01_random_field/",
-        "examples/02_cov_model/",
-        "examples/03_variogram/",
-        "examples/04_vector_field/",
-        "examples/05_kriging/",
-        "examples/06_conditioned_fields/",
-        "examples/07_transformations/",
-        "examples/08_geo_coordinates/",
-        "examples/09_spatio_temporal/",
-        "examples/10_normalizer/",
-    ],
-    # Pattern to search for example files
-    "filename_pattern": r"\.py",
-    # Remove the "Download all examples" button from the top level gallery
-    "download_all_examples": False,
-    # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": FileNameSortKey,
-    # directory where function granular galleries are stored
-    "backreferences_dir": None,
-    # Modules for which function level galleries are created.  In
-    "doc_module": "gstools_cython",
-    # "first_notebook_cell": (
-    #     "%matplotlib inline\n"
-    #     "from pyvista import set_plot_theme\n"
-    #     "set_plot_theme('document')"
-    # ),
-    "matplotlib_animations": True,
 }

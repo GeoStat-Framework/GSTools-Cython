@@ -1,6 +1,17 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
 """
 This is a summator for the kriging routines
+
+.. currentmodule:: gstools_cython.krige
+
+Functions
+^^^^^^^^^
+
+.. autosummary::
+   :toctree:
+
+   calc_field_krige_and_variance
+   calc_field_krige
 """
 
 import numpy as np
@@ -31,7 +42,27 @@ def calc_field_krige_and_variance(
     const double[:] cond,
     num_threads=None,
 ):
+    """
+    Calculate kriging field and error variance.
 
+    Parameters
+    ----------
+    krig_mat : double[:, :]
+        kriging matrix
+    krig_vecs : double[:, :]
+        RHS of the kriging equation
+    cond : double[:]
+        values at the conditioning points
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    field : double[:]
+        kriging field
+    error : double[:]
+        kriging error variance
+    """
     cdef int mat_i = krig_mat.shape[0]
     cdef int res_i = krig_vecs.shape[1]
 
@@ -62,7 +93,25 @@ def calc_field_krige(
     const double[:] cond,
     const int num_threads=1,
 ):
+    """
+    Calculate kriging field without error variance.
 
+    Parameters
+    ----------
+    krig_mat : double[:, :]
+        kriging matrix
+    krig_vecs : double[:, :]
+        RHS of the kriging equation
+    cond : double[:]
+        values at the conditioning points
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    field : double[:]
+        kriging field
+    """
     cdef int mat_i = krig_mat.shape[0]
     cdef int res_i = krig_vecs.shape[1]
 

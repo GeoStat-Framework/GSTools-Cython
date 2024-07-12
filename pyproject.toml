@@ -52,15 +52,9 @@ dependencies = [
 [project.optional-dependencies]
 doc = [
     "m2r2>=0.2.8",
-    "matplotlib>=3.7",
-    "meshzoo>=0.7",
     "numpydoc>=1.1",
-    "pykrige>=1.5,<2",
-    "pyvista>=0.40",
     "sphinx>=7",
-    "sphinx-gallery>=0.8",
     "sphinx-rtd-theme>=2",
-    "sphinxcontrib-youtube>=1.1",
 ]
 test = ["pytest-cov>=3"]
 lint = [
@@ -122,8 +116,6 @@ target-version = [
     [tool.pylint.main]
     extension-pkg-whitelist = [
         "numpy",
-        "scipy",
-        "gstools_core",
     ]
     ignore = "_version.py"
     load-plugins = [

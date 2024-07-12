@@ -1,6 +1,17 @@
 # cython: language_level=3, boundscheck=False, wraparound=False, cdivision=True
 """
 This is the randomization method summator, implemented in cython.
+
+.. currentmodule:: gstools_cython.field
+
+Functions
+^^^^^^^^^
+
+.. autosummary::
+   :toctree:
+
+   summate
+   summate_incompr
 """
 
 import numpy as np
@@ -33,6 +44,27 @@ def summate(
     const double[:, :] pos,
     num_threads=None,
 ):
+    """
+    Fourier summator for random field generation using the randomization method.
+
+    Parameters
+    ----------
+    cov_samples : double[:, :]
+        samples from the spectral density distribution of the covariance model
+    z_1 : double[:]
+        random samples from a normal distribution
+    z_2 : double[:]
+        random samples from a normal distribution
+    pos : double[:, :]
+        the position (d,n) tuple with d dimensions and n points.
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    summed_modes : double[:]
+        summed random modes
+    """
     cdef int i, j, d
     cdef double phase
     cdef int dim = pos.shape[0]
@@ -71,6 +103,27 @@ def summate_incompr(
     const double[:, :] pos,
     num_threads=None,
 ):
+    """
+    Fourier summator for incompressible random vector field generation using the randomization method.
+
+    Parameters
+    ----------
+    cov_samples : double[:, :]
+        samples from the spectral density distribution of the covariance model
+    z_1 : double[:]
+        random samples from a normal distribution
+    z_2 : double[:]
+        random samples from a normal distribution
+    pos : double[:, :]
+        the position (d,n) tuple with d dimensions and n points.
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    summed_modes : double[:, :]
+        summed random modes
+    """
     cdef int i, j, d
     cdef double phase
     cdef double k_2
