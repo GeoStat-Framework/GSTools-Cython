@@ -76,7 +76,7 @@ jobs:
           path: ./dist/*.whl
 
   build_sdist:
-    name: sdist on ${{ matrix.os }} with py ${{ matrix.ver.py }} numpy${{ matrix.ver.np }} scipy${{ matrix.ver.sp }}
+    name: sdist on ${{ matrix.os }} with py ${{ matrix.ver.py }} numpy${{ matrix.ver.np }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -84,19 +84,19 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         # https://github.com/scipy/oldest-supported-numpy/blob/main/setup.cfg
         ver:
-          - {py: '3.8', np: '==1.20.0', sp: '==1.5.4'}
-          - {py: '3.9', np: '==1.20.0', sp: '==1.5.4'}
-          - {py: '3.10', np: '==1.21.6', sp: '==1.7.2'}
-          - {py: '3.11', np: '==1.23.2', sp: '==1.9.2'}
-          - {py: '3.12', np: '==1.26.2', sp: '==1.11.2'}
-          - {py: '3.12', np: '>=2.0.0rc1', sp: '>=1.13.0'}
+          - {py: '3.8', np: '==1.20.0'}
+          - {py: '3.9', np: '==1.20.0'}
+          - {py: '3.10', np: '==1.21.6'}
+          - {py: '3.11', np: '==1.23.2'}
+          - {py: '3.12', np: '==1.26.2'}
+          - {py: '3.12', np: '>=2.0.0rc1'}
         exclude:
           - os: macos-14
-            ver: {py: '3.8', np: '==1.20.0', sp: '==1.5.4'}
+            ver: {py: '3.8', np: '==1.20.0'}
           - os: macos-14
-            ver: {py: '3.9', np: '==1.20.0', sp: '==1.5.4'}
+            ver: {py: '3.9', np: '==1.20.0'}
           - os: macos-14
-            ver: {py: '3.10', np: '==1.21.6', sp: '==1.7.2'}
+            ver: {py: '3.10', np: '==1.21.6'}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -115,6 +115,7 @@ jobs:
       - name: Install GSTools-Cython
         env:
           GSTOOLS_BUILD_PARALLEL: 1
+          GSTOOLS_CY_COV: 1
         run: |
           pip install -v --editable .[test]
 
@@ -122,9 +123,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install "numpy${{ matrix.ver.np }}" "scipy${{ matrix.ver.sp }}"
-          python -m pytest --cov gstools --cov-report term-missing -v tests/
-          # python -m coveralls --service=github
+          pip install "numpy${{ matrix.ver.np }}"
+          python -m pytest --cov gstools_cython --cov-report term-missing -v tests/
+          python -m coveralls --service=github
 
       - name: Build sdist
         run: |
