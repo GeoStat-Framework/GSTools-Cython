@@ -29,10 +29,10 @@ else:
 
 compiler_directives = {}
 if int(os.getenv("GSTOOLS_CY_DOCS", "0")):
-    print(f"## GSTools-Cython setup: embed signatures")
+    print(f"## GSTools-Cython setup: embed signatures for documentation")
     compiler_directives["embedsignature"] = True
 if int(os.getenv("GSTOOLS_CY_COV", "0")):
-    print(f"## GSTools-Cython setup: enable line-trace")
+    print(f"## GSTools-Cython setup: enable line-trace for coverage")
     compiler_directives["linetrace"] = True
 
 options = {
