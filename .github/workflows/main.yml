@@ -107,11 +107,15 @@ jobs:
         with:
           python-version: ${{ matrix.ver.py }}
 
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install build
+
       - name: Install GSTools-Cython
         env:
           GSTOOLS_BUILD_PARALLEL: 1
         run: |
-          python -m pip install --upgrade pip
           pip install -v --editable .[test]
 
       - name: Run tests
