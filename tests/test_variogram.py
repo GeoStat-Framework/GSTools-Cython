@@ -12,7 +12,44 @@ import gstools_cython as gs_cy
 class TestVariogram(unittest.TestCase):
     def test_directional(self): ...
 
-    def test_unstructured(self): ...
+    def test_unstructured(self):
+        x = np.arange(1, 11, 1, dtype=np.double)
+        z = np.array(
+            (41.2, 40.2, 39.7, 39.2, 40.1, 38.3, 39.1, 40.0, 41.1, 40.3),
+            dtype=np.double,
+        )
+        bins = np.arange(1, 11, 1, dtype=np.double)
+        x = np.atleast_2d(x)
+        z = np.atleast_2d(z)
+
+        gamma, counts = gs_cy.variogram.unstructured(z, bins, x)
+        self.assertAlmostEqual(gamma[0], 0.4917, places=4)
+        self.assertEqual(counts[0], 9)
+
+        x_c = np.linspace(0.0, 100.0, 30)
+        y_c = np.linspace(0.0, 100.0, 30)
+        x, y = np.meshgrid(x_c, y_c)
+        x = np.reshape(x, len(x_c) * len(y_c))
+        y = np.reshape(y, len(x_c) * len(y_c))
+        pos = np.array((x, y), dtype=np.double)
+
+        rng = np.random.RandomState(1479373475)
+        field = np.asarray([rng.rand(len(x))], dtype=np.double)
+        bins = np.arange(0, 100, 10, dtype=np.double)
+
+        var = 1.0 / 12.0
+
+        gamma, counts = gs_cy.variogram.unstructured(field, bins, pos)
+        self.assertAlmostEqual(gamma[0], var, places=2)
+        self.assertAlmostEqual(gamma[len(gamma) // 2], var, places=2)
+        self.assertAlmostEqual(gamma[-1], var, places=2)
+
+        gamma, counts = gs_cy.variogram.unstructured(
+            field, bins, pos, estimator_type="c"
+        )
+        self.assertAlmostEqual(gamma[0], var, places=2)
+        self.assertAlmostEqual(gamma[len(gamma) // 2], var, places=2)
+        self.assertAlmostEqual(gamma[-1], var, places=2)
 
     def test_structured(self):
         z = np.array(
