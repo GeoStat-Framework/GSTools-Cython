@@ -21,8 +21,7 @@ CY_MODS = [
 open_mp = False
 if int(os.getenv("GSTOOLS_BUILD_PARALLEL", "0")):
     added = [add_openmp_flags_if_available(mod) for mod in CY_MODS]
-    if any(added):
-        open_mp = True
+    open_mp = any(added)
     print(f"## GSTools-Cython setup: OpenMP used: {open_mp}")
 else:
     print("## GSTools-Cython setup: OpenMP not wanted by the user.")
@@ -34,6 +33,8 @@ if int(os.getenv("GSTOOLS_CY_DOCS", "0")):
 if int(os.getenv("GSTOOLS_CY_COV", "0")):
     print(f"## GSTools-Cython setup: enable line-trace for coverage")
     compiler_directives["linetrace"] = True
+    for mod in CY_MODS:
+        mod.define_macros.append(("CYTHON_TRACE_NOGIL", "1"))
 
 options = {
     "compile_time_env": {"OPENMP": open_mp},

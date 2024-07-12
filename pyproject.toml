@@ -96,6 +96,7 @@ target-version = [
 
 [tool.coverage]
     [tool.coverage.run]
+    plugins = ["Cython.Coverage"]
     source = ["gstools_cython"]
     omit = [
         "*docs*",
