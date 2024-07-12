@@ -10,7 +10,29 @@ import gstools_cython as gs_cy
 
 
 class TestVariogram(unittest.TestCase):
-    def test_directional(self): ...
+    def test_directional(self):
+        x_c = np.linspace(0.0, 100.0, 30)
+        y_c = np.linspace(0.0, 100.0, 30)
+        x, y = np.meshgrid(x_c, y_c)
+        x = np.reshape(x, len(x_c) * len(y_c))
+        y = np.reshape(y, len(x_c) * len(y_c))
+        pos = np.array((x, y), dtype=np.double)
+        dirs = np.array(((1, 0), (0, 1)), dtype=np.double)
+
+        rng = np.random.RandomState(1479373475)
+        field = np.asarray([rng.rand(len(x))], dtype=np.double)
+        bins = np.arange(0, 100, 10, dtype=np.double)
+
+        var = 1.0 / 12.0
+
+        gamma, counts = gs_cy.variogram.directional(field, bins, pos, dirs)
+        print(counts)
+        self.assertAlmostEqual(gamma[0, 0], var, places=2)
+        self.assertAlmostEqual(gamma[0, len(gamma[0]) // 2], var, places=2)
+        self.assertAlmostEqual(gamma[0, -1], var, places=2)
+        self.assertAlmostEqual(gamma[1, 0], var, places=2)
+        self.assertAlmostEqual(gamma[1, len(gamma[0]) // 2], var, places=2)
+        self.assertAlmostEqual(gamma[1, -1], var, places=2)
 
     def test_unstructured(self):
         x = np.arange(1, 11, 1, dtype=np.double)
