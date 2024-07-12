@@ -104,7 +104,7 @@ def summate_incompr(
     num_threads=None,
 ):
     """
-    Fourier summator for incompressible random vector field generation using the randomization method.
+    Fourier summator for random vector field generation using the randomization method.
 
     Parameters
     ----------
