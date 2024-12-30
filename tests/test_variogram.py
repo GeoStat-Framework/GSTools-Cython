@@ -107,7 +107,7 @@ class TestVariogram(unittest.TestCase):
             (41.2, 40.2, 39.7, 39.2, 40.1, 38.3, 39.1, 40.0, 41.1, 40.3),
             dtype=np.double,
         )
-        mask = np.array((1, 0, 0, 0, 0, 0, 0, 0, 0, 0), dtype=np.int32)
+        mask = np.array((1, 0, 0, 0, 0, 0, 0, 0, 0, 0), dtype=bool)
         # need 2d arrays
         z = z.reshape((z.shape[0], -1))
         mask = mask.reshape((mask.shape[0], -1))
@@ -124,7 +124,7 @@ class TestVariogram(unittest.TestCase):
 
         rng = np.random.RandomState(1479373475)
         field = np.asarray(rng.rand(80, 60), dtype=np.double)
-        mask = np.zeros_like(field, dtype=np.int32)
+        mask = np.zeros_like(field, dtype=bool)
         mask[0, 0] = 1
 
         gamma = gs_cy.variogram.ma_structured(field, mask)
