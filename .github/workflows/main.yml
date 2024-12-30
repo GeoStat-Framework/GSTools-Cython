@@ -22,10 +22,10 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.12
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.12
 
       - name: Install dependencies
         run: |
@@ -68,7 +68,7 @@ jobs:
           fetch-depth: "0"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.18.0
+        uses: pypa/cibuildwheel@v2.22.0
         with:
           output-dir: dist
 
@@ -90,7 +90,8 @@ jobs:
           - {py: '3.10', np: '==1.21.6'}
           - {py: '3.11', np: '==1.23.2'}
           - {py: '3.12', np: '==1.26.2'}
-          - {py: '3.12', np: '>=2.0.0rc1'}
+          - {py: '3.13', np: '==2.2.1'}
+          - {py: '3.13', np: '>=2.2.1'}
         exclude:
           - os: macos-14
             ver: {py: '3.8', np: '==1.20.0'}
