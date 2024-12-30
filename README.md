@@ -64,8 +64,8 @@ If you want to cite a specific version, have a look at the [Zenodo site](https:/
 
 ## Documentation
 
-- GSTools: https://https://gstools.readthedocs.io/
-- GSTools-Cython: https://https://gstools-cython.readthedocs.io/
+- GSTools: https://gstools.readthedocs.io/
+- GSTools-Cython: https://gstools-cython.readthedocs.io/
 
 ## Cython backend
 
