@@ -2,7 +2,7 @@
 
 All notable changes to **GSTools-Cython** will be documented in this file.
 
-## [1.0.0] - 2024-07
+## [1.0.0] - 2025-01
 
 First release of GSTools-Cython
 

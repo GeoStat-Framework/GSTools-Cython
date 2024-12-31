@@ -86,7 +86,7 @@ You can contact us via <info@geostat-framework.org>.
 
 ## License
 
-[LGPLv3][license_link] © 2018-2024
+[LGPLv3][license_link] © 2018-2025
 
 [license_link]: https://github.com/GeoStat-Framework/GSTools-Cython/blob/main/LICENSE
 [pip_link]: https://pypi.org/project/gstools
