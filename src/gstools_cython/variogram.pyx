@@ -48,7 +48,7 @@ cdef inline double dist_euclid(
     const double[:, :] pos,
     const int i,
     const int j,
-) nogil:
+) noexcept nogil:
     cdef int d
     cdef double dist_squared = 0.0
     for d in range(dim):
@@ -61,7 +61,7 @@ cdef inline double dist_haversine(
     const double[:, :] pos,
     const int i,
     const int j,
-) nogil:
+) noexcept nogil:
     # pos holds lat-lon in deg
     cdef double deg_2_rad = M_PI / 180.0
     cdef double diff_lat = (pos[0, j] - pos[0, i]) * deg_2_rad
@@ -80,7 +80,7 @@ ctypedef double (*_dist_func)(
     const double[:, :],
     const int,
     const int,
-) nogil
+) noexcept nogil
 
 
 cdef inline bint dir_test(
@@ -93,7 +93,7 @@ cdef inline bint dir_test(
     const int i,
     const int j,
     const int d,
-) nogil:
+) noexcept nogil:
     cdef double s_prod = 0.0  # scalar product
     cdef double b_dist = 0.0  # band-distance
     cdef double tmp  # temporary variable
@@ -122,13 +122,13 @@ cdef inline bint dir_test(
     return in_band and in_angle
 
 
-cdef inline double estimator_matheron(const double f_diff) nogil:
+cdef inline double estimator_matheron(const double f_diff) noexcept nogil:
     return f_diff * f_diff
 
-cdef inline double estimator_cressie(const double f_diff) nogil:
+cdef inline double estimator_cressie(const double f_diff) noexcept nogil:
     return sqrt(fabs(f_diff))
 
-ctypedef double (*_estimator_func)(const double) nogil
+ctypedef double (*_estimator_func)(const double) noexcept nogil
 
 cdef inline void normalization_matheron(
     double[:] variogram,

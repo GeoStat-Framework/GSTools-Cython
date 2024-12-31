@@ -87,7 +87,7 @@ def summate(
     return np.asarray(summed_modes)
 
 
-cdef (double) abs_square(const double[:] vec) nogil:
+cdef (double) abs_square(const double[:] vec) noexcept nogil:
     cdef int i
     cdef double r = 0.
 
