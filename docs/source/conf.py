@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# GeoStatTools documentation build configuration file, created by
+# GSTools documentation build configuration file, created by
 # sphinx-quickstart on Fri Jan  5 14:20:43 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -190,7 +190,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "GeoStatToolsdoc"
+htmlhelp_basename = "GSToolsdoc"
 # logos for the page
 html_logo = "pics/gstools_150.png"
 html_favicon = "pics/gstools.ico"
@@ -219,8 +219,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "GeoStatTools-Cython.tex",
-        "GeoStatTools-Cython Documentation",
+        "GSTools-Cython.tex",
+        "GSTools-Cython Documentation",
         "Sebastian Müller, Lennart Schüler",
         "manual",
     )
@@ -234,8 +234,8 @@ latex_documents = [
 man_pages = [
     (
         master_doc,
-        "geostattools-cython",
-        "GeoStatTools-Cython Documentation",
+        "GSTools-Cython",
+        "GSTools-Cython Documentation",
         [author],
         1,
     )
@@ -250,10 +250,10 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "GeoStatTools-Cython",
-        "GeoStatTools-Cython Documentation",
+        "GSTools-Cython",
+        "GSTools-Cython Documentation",
         author,
-        "GeoStatTools-Cython",
+        "GSTools-Cython",
         "Cython backend for GSTools.",
         "Miscellaneous",
     )
