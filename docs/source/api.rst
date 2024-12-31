@@ -1,8 +1,8 @@
-===========
-GSTools API
-===========
+==================
+GSTools-Cython API
+==================
 
-.. automodule:: gstools
+.. automodule:: gstools_cython
 
 .. raw:: latex
 

@@ -7,114 +7,169 @@ import unittest
 
 import numpy as np
 
-import gstools as gs
+import gstools_cython as gs_cy
 
 
 class TestField(unittest.TestCase):
-    def setUp(self):
-        self.cov_model = gs.Gaussian(dim=2, var=1.5, len_scale=4.0)
-        rng = np.random.RandomState(123018)
-        x = rng.uniform(0.0, 10, 100)
-        y = rng.uniform(0.0, 10, 100)
-        self.field = rng.uniform(0.0, 10, 100)
-        self.pos = np.array([x, y])
+    def test_summate(self):
+        # x = np.linspace(0,1,5)
+        # mod = gs.Gaussian(dim=1)
+        # srf = gs.SRF(mod, mode_no=10, seed=1234)
+        # srf(x)
+        cov_samples = np.array(
+            [
+                [
+                    -0.49995807783373075,
+                    -0.7820163721559825,
+                    1.690118803237597,
+                    1.9756208177659687,
+                    0.03945771863093044,
+                    2.127277879098216,
+                    -1.4576342168089562,
+                    0.5947643837384975,
+                    0.09811641644885175,
+                    -0.003565139481429214,
+                ]
+            ],
+            dtype=np.double,
+        )
+        z_1 = np.array(
+            [
+                0.9946988048718556,
+                1.814210031079757,
+                1.1686180785678166,
+                -0.374250826058506,
+                1.208282071166948,
+                1.044190549877576,
+                -1.7850832797400267,
+                1.1341225325719555,
+                0.005871108068883179,
+                0.4918288313002647,
+            ],
+            dtype=np.double,
+        )
+        z_2 = np.array(
+            [
+                0.38320431788616655,
+                -0.6158908046660203,
+                -1.5221152986631148,
+                0.4213284409858781,
+                -1.2858750366939806,
+                -0.1286138436420879,
+                -0.031244435678407644,
+                0.16914501403169677,
+                -0.04578215996092473,
+                -0.48668407941054204,
+            ],
+            dtype=np.double,
+        )
+        pos = np.array([[0.0, 0.25, 0.5, 0.75, 1.0]], dtype=np.double)
+        summed_modes = np.array(
+            [5.7024879, 5.16758284, 4.46056939, 3.73413573, 3.14911511], dtype=np.double
+        )
+        summed = gs_cy.field.summate(cov_samples, z_1, z_2, pos)
+        np.testing.assert_allclose(summed_modes, summed)
 
-    def test_standalone(self):
-        fld = gs.field.Field(dim=2)
-        fld_cov = gs.field.Field(model=self.cov_model)
-        field1 = fld(self.pos, self.field)
-        field2 = fld_cov(self.pos, self.field)
-        self.assertTrue(np.all(np.isclose(field1, field2)))
-        self.assertTrue(np.all(np.isclose(field1, self.field)))
-
-    def test_raise(self):
-        # vector field on latlon
-        fld = gs.field.Field(gs.Gaussian(latlon=True), value_type="vector")
-        self.assertRaises(ValueError, fld, [1, 2], [1, 2])
-        # no pos tuple present
-        fld = gs.field.Field(dim=2)
-        self.assertRaises(ValueError, fld.post_field, [1, 2])
-        # wrong model type
-        with self.assertRaises(ValueError):
-            gs.field.Field(model=3.1415)
-        # no model and no dim given
-        with self.assertRaises(ValueError):
-            gs.field.Field()
-        # wrong value type
-        with self.assertRaises(ValueError):
-            gs.field.Field(dim=2, value_type="complex")
-        # wrong mean shape
-        with self.assertRaises(ValueError):
-            gs.field.Field(dim=3, mean=[1, 2])
-
-    def test_pos_compare(self):
-        fld = gs.field.Field(dim=1)
-        fld.set_pos([1, 2])
-        fld._dim = 2
-        info = fld.set_pos([[1], [2]], info=True)
-        self.assertTrue(info["deleted"])
-        info = fld.set_pos([[2], [3]], info=True)
-        self.assertTrue(info["deleted"])
-
-    def test_magic(self):
-        fld = gs.field.Field(dim=1)
-        f1 = np.array([0, 0], dtype=np.double)
-        f2 = np.array([2, 3], dtype=np.double)
-        fld([1, 2], store="f1")  # default field with zeros
-        fld([1, 2], f2, store="f2")
-        fields1 = fld[:]
-        fields2 = fld[[0, 1]]
-        fields3 = fld[["f1", "f2"]]
-        fields4 = fld.all_fields
-        self.assertTrue(np.allclose([f1, f2], fields1))
-        self.assertTrue(np.allclose([f1, f2], fields2))
-        self.assertTrue(np.allclose([f1, f2], fields3))
-        self.assertTrue(np.allclose([f1, f2], fields4))
-        self.assertEqual(len(fld), 2)
-        self.assertTrue("f1" in fld)
-        self.assertTrue("f2" in fld)
-        self.assertFalse("f3" in fld)
-        # subscription
-        with self.assertRaises(KeyError):
-            fld["f3"]
-        with self.assertRaises(KeyError):
-            del fld["f3"]
-        with self.assertRaises(KeyError):
-            del fld[["f3"]]
-        del fld["f1"]
-        self.assertFalse("f1" in fld)
-        fld([1, 2], f1, store="f1")
-        del fld[-1]
-        self.assertFalse("f1" in fld)
-        fld([1, 2], f1, store="f1")
-        del fld[:]
-        self.assertEqual(len(fld), 0)
-        fld([1, 2], f1, store="f1")
-        del fld.field_names
-        self.assertEqual(len(fld), 0)
-        # store config (missing check)
-        name, save = fld.get_store_config(store="fld", fld_cnt=1)
-        self.assertEqual(name, ["fld"])
-        self.assertTrue(save[0])
-
-    def test_reuse(self):
-        fld = gs.field.Field(dim=1)
-        # no pos tuple
-        with self.assertRaises(ValueError):
-            fld()
-        # no field shape
-        with self.assertRaises(ValueError):
-            fld.post_field([1, 2])
-        # bad name
-        fld.set_pos([1, 2])
-        with self.assertRaises(ValueError):
-            fld.post_field([1, 2], process=False, name=0)
-        # incompatible reuse
-        with self.assertRaises(ValueError):
-            fld.structured()
-        fld.set_pos([1, 2], "structured")
-        with self.assertRaises(ValueError):
-            fld.unstructured()
+    def test_summate_incompr(self):
+        # x = y = np.linspace(0,1,3)
+        # mod = gs.Gaussian(dim=2)
+        # srf = gs.SRF(mod, generator="VectorField", mode_no=10, seed=1234)
+        # srf.structured((x, y))
+        cov_samples = np.array(
+            [
+                [
+                    -1.024970238789004,
+                    -0.8240580540129643,
+                    2.2180425521549676,
+                    -0.3936617167321944,
+                    0.27486363934743613,
+                    2.0706439558766294,
+                    0.14405381961860603,
+                    -0.13186433446921356,
+                    -0.39813741816987425,
+                    -0.009242543307168134,
+                ],
+                [
+                    -0.3396282286113363,
+                    -1.1400706088519987,
+                    -0.7152472598352912,
+                    -2.5770200983873353,
+                    0.06603124248012006,
+                    1.8138240750039616,
+                    -2.097665482523384,
+                    -1.1869215683139556,
+                    -0.2095286706436547,
+                    0.08398183470003417,
+                ],
+            ],
+            dtype=np.double,
+        )
+        z_1 = np.array(
+            [
+                0.9946988048718556,
+                1.814210031079757,
+                1.1686180785678166,
+                -0.374250826058506,
+                1.208282071166948,
+                1.044190549877576,
+                -1.7850832797400267,
+                1.1341225325719555,
+                0.005871108068883179,
+                0.4918288313002647,
+            ],
+            dtype=np.double,
+        )
+        z_2 = np.array(
+            [
+                0.38320431788616655,
+                -0.6158908046660203,
+                -1.5221152986631148,
+                0.4213284409858781,
+                -1.2858750366939806,
+                -0.1286138436420879,
+                -0.031244435678407644,
+                0.16914501403169677,
+                -0.04578215996092473,
+                -0.48668407941054204,
+            ],
+            dtype=np.double,
+        )
+        pos = np.array(
+            [
+                [0.0, 0.0, 0.0, 0.5, 0.5, 0.5, 1.0, 1.0, 1.0],
+                [0.0, 0.5, 1.0, 0.0, 0.5, 1.0, 0.0, 0.5, 1.0],
+            ],
+            dtype=np.double,
+        )
+        summed_modes = np.array(
+            [
+                [
+                    1.38449093,
+                    1.71111119,
+                    2.74104654,
+                    0.86548576,
+                    0.71454466,
+                    1.75446747,
+                    0.04791079,
+                    -0.21360334,
+                    1.06275366,
+                ],
+                [
+                    -1.74849962,
+                    -1.24325646,
+                    -0.32330441,
+                    -1.9262243,
+                    -0.95014749,
+                    0.07508429,
+                    -1.41925949,
+                    -0.67520382,
+                    -0.10531391,
+                ],
+            ],
+            dtype=np.double,
+        )
+        summed = gs_cy.field.summate_incompr(cov_samples, z_1, z_2, pos)
+        np.testing.assert_allclose(summed_modes, summed)
 
 
 if __name__ == "__main__":

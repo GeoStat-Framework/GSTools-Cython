@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 #
-# GeoStatTools documentation build configuration file, created by
+# GSTools documentation build configuration file, created by
 # sphinx-quickstart on Fri Jan  5 14:20:43 2018.
 #
 # This file is execfile()d with the current directory set to its
@@ -33,7 +33,7 @@ warnings.filterwarnings(
 # local module should not be added to sys path if it's installed on RTFD
 # see: https://stackoverflow.com/a/31882049/6696397
 # sys.path.insert(0, os.path.abspath("../../"))
-from gstools import __version__ as ver
+from gstools_cython import __version__ as ver
 
 
 def skip(app, what, name, obj, skip, options):
@@ -66,9 +66,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",  # parameters look better than with numpydoc only
     "numpydoc",
-    "sphinx_gallery.gen_gallery",
-    "m2r2",
-    "sphinxcontrib.youtube",
+    "myst_parser",
 ]
 
 # autosummaries from source-files
@@ -98,7 +96,11 @@ templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-source_suffix = [".rst", ".md"]
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
+# source_suffix = [".rst", ".md"]
 # source_suffix = ".rst"
 
 # The master toctree document.
@@ -109,7 +111,7 @@ master_doc = "contents"
 
 # General information about the project.
 curr_year = datetime.datetime.now().year
-project = "GSTools"
+project = "GSTools-Cython"
 copyright = f"2018 - {curr_year}, Sebastian Müller, Lennart Schüler"
 author = "Sebastian Müller, Lennart Schüler"
 
@@ -152,7 +154,7 @@ html_theme_options = {
     #    'canonical_url': '',
     #    'analytics_id': '',
     "logo_only": False,
-    "display_version": True,
+    "version_selector": True,
     "prev_next_buttons_location": "top",
     #    'style_external_links': False,
     #    'vcs_pageview_mode': '',
@@ -188,7 +190,7 @@ html_sidebars = {
 # -- Options for HTMLHelp output ------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = "GeoStatToolsdoc"
+htmlhelp_basename = "GSToolsdoc"
 # logos for the page
 html_logo = "pics/gstools_150.png"
 html_favicon = "pics/gstools.ico"
@@ -217,8 +219,8 @@ latex_elements = {
 latex_documents = [
     (
         master_doc,
-        "GeoStatTools.tex",
-        "GeoStatTools Documentation",
+        "GSTools-Cython.tex",
+        "GSTools-Cython Documentation",
         "Sebastian Müller, Lennart Schüler",
         "manual",
     )
@@ -230,7 +232,13 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, "geostattools", "GeoStatTools Documentation", [author], 1)
+    (
+        master_doc,
+        "GSTools-Cython",
+        "GSTools-Cython Documentation",
+        [author],
+        1,
+    )
 ]
 
 
@@ -242,11 +250,11 @@ man_pages = [
 texinfo_documents = [
     (
         master_doc,
-        "GeoStatTools",
-        "GeoStatTools Documentation",
+        "GSTools-Cython",
+        "GSTools-Cython Documentation",
         author,
-        "GeoStatTools",
-        "Geo-statistical toolbox.",
+        "GSTools-Cython",
+        "Cython backend for GSTools.",
         "Miscellaneous",
     )
 ]
@@ -260,73 +268,4 @@ suppress_warnings = [
 intersphinx_mapping = {
     "Python": ("https://docs.python.org/", None),
     "NumPy": ("https://numpy.org/doc/stable/", None),
-    "SciPy": ("https://docs.scipy.org/doc/scipy/", None),
-    "matplotlib": ("https://matplotlib.org/stable/", None),
-    "hankel": ("https://hankel.readthedocs.io/en/latest/", None),
-    "emcee": ("https://emcee.readthedocs.io/en/latest/", None),
-}
-
-# -- Sphinx Gallery Options
-from sphinx_gallery.sorting import FileNameSortKey
-
-# Use pyvista's image scraper for example gallery
-# import pyvista
-# https://github.com/tkoyama010/pyvista-doc-translations/blob/85c835a3ada3a2adefac06ba70e15a101ffa9162/conf.py#L21
-# https://github.com/simpeg/discretize/blob/f414dd7ee7c5ba9a141cb2c37d4b71fdc531eae8/docs/conf.py#L334
-# Make sure off screen is set to true when building locally
-# pyvista.OFF_SCREEN = True
-# # necessary when building the sphinx gallery
-# pyvista.BUILDING_GALLERY = True
-# # Optional - set parameters like theme or window size
-# pyvista.set_plot_theme("document")
-
-sphinx_gallery_conf = {
-    # "image_scrapers": ("pyvista", "matplotlib"),
-    "remove_config_comments": True,
-    # only show "print" output as output
-    "capture_repr": (),
-    # path to your examples scripts
-    "examples_dirs": [
-        "../../examples/00_misc/",
-        "../../examples/01_random_field/",
-        "../../examples/02_cov_model/",
-        "../../examples/03_variogram/",
-        "../../examples/04_vector_field/",
-        "../../examples/05_kriging/",
-        "../../examples/06_conditioned_fields/",
-        "../../examples/07_transformations/",
-        "../../examples/08_geo_coordinates/",
-        "../../examples/09_spatio_temporal/",
-        "../../examples/10_normalizer/",
-    ],
-    # path where to save gallery generated examples
-    "gallery_dirs": [
-        "examples/00_misc/",
-        "examples/01_random_field/",
-        "examples/02_cov_model/",
-        "examples/03_variogram/",
-        "examples/04_vector_field/",
-        "examples/05_kriging/",
-        "examples/06_conditioned_fields/",
-        "examples/07_transformations/",
-        "examples/08_geo_coordinates/",
-        "examples/09_spatio_temporal/",
-        "examples/10_normalizer/",
-    ],
-    # Pattern to search for example files
-    "filename_pattern": r"\.py",
-    # Remove the "Download all examples" button from the top level gallery
-    "download_all_examples": False,
-    # Sort gallery example by file name instead of number of lines (default)
-    "within_subsection_order": FileNameSortKey,
-    # directory where function granular galleries are stored
-    "backreferences_dir": None,
-    # Modules for which function level galleries are created.  In
-    "doc_module": "gstools",
-    # "first_notebook_cell": (
-    #     "%matplotlib inline\n"
-    #     "from pyvista import set_plot_theme\n"
-    #     "set_plot_theme('document')"
-    # ),
-    "matplotlib_animations": True,
 }

@@ -112,7 +112,7 @@ info/
 *.cpp
 
 # generated version file
-src/gstools/_version.py
+src/gstools_cython/_version.py
 
 # generated docs
 docs/source/examples/
