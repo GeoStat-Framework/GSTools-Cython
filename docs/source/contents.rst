@@ -8,4 +8,5 @@ Contents
 
    index
    api
+   authors
    changelog
