@@ -19,6 +19,8 @@
 
 ## Installation
 
+This is the Cython backend for the Geo-Statistical Toolbox [GSTools](https://github.com/GeoStat-Framework/GSTools).
+It is not ment to be installed directly.
 
 ### conda
 
@@ -53,19 +55,19 @@ If you are using GSTools in your publication please cite our paper:
 
 > Müller, S., Schüler, L., Zech, A., and Heße, F.:
 > GSTools v1.3: a toolbox for geostatistical modelling in Python,
-> Geosci. Model Dev., 15, 3161–3182, https://doi.org/10.5194/gmd-15-3161-2022, 2022.
+> Geosci. Model Dev., 15, 3161–3182, [https://doi.org/10.5194/gmd-15-3161-2022](https://doi.org/10.5194/gmd-15-3161-2022), 2022.
 
 You can cite the Zenodo code publication of GSTools by:
 
-> Sebastian Müller & Lennart Schüler. GeoStat-Framework/GSTools. Zenodo. https://doi.org/10.5281/zenodo.1313628
+> Sebastian Müller & Lennart Schüler. GeoStat-Framework/GSTools. Zenodo. [https://doi.org/10.5281/zenodo.1313628](https://doi.org/10.5281/zenodo.1313628)
 
 If you want to cite a specific version, have a look at the [Zenodo site](https://doi.org/10.5281/zenodo.1313628).
 
 
 ## Documentation
 
-- GSTools: https://gstools.readthedocs.io/
-- GSTools-Cython: https://gstools-cython.readthedocs.io/
+- GSTools: [https://gstools.readthedocs.io/](https://gstools.readthedocs.io/)
+- GSTools-Cython: [https://gstools-cython.readthedocs.io/](https://gstools-cython.readthedocs.io/)
 
 ## Cython backend
 
@@ -87,3 +89,8 @@ You can contact us via <info@geostat-framework.org>.
 [LGPLv3][license_link] © 2018-2024
 
 [license_link]: https://github.com/GeoStat-Framework/GSTools-Cython/blob/main/LICENSE
+[pip_link]: https://pypi.org/project/gstools
+[conda_link]: https://docs.conda.io/en/latest/miniconda.html
+[conda_forge_link]: https://github.com/conda-forge/gstools-feedstock#installing-gstools
+[winpy_link]: https://winpython.github.io/
+[doc_install_link]: https://geostat-framework.readthedocs.io/projects/gstools/en/stable/#pip

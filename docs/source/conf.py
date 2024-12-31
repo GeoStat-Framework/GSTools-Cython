@@ -66,7 +66,7 @@ extensions = [
     "sphinx.ext.autosummary",
     "sphinx.ext.napoleon",  # parameters look better than with numpydoc only
     "numpydoc",
-    "m2r2",
+    "myst_parser",
 ]
 
 # autosummaries from source-files
@@ -96,7 +96,11 @@ templates_path = ["_templates"]
 
 # The suffix(es) of source filenames.
 # You can specify multiple suffix as a list of string:
-source_suffix = [".rst", ".md"]
+source_suffix = {
+    ".rst": "restructuredtext",
+    ".md": "markdown",
+}
+# source_suffix = [".rst", ".md"]
 # source_suffix = ".rst"
 
 # The master toctree document.
@@ -150,7 +154,7 @@ html_theme_options = {
     #    'canonical_url': '',
     #    'analytics_id': '',
     "logo_only": False,
-    "display_version": True,
+    "version_selector": True,
     "prev_next_buttons_location": "top",
     #    'style_external_links': False,
     #    'vcs_pageview_mode': '',
