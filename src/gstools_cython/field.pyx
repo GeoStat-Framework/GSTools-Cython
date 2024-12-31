@@ -12,6 +12,7 @@ Functions
 
    summate
    summate_incompr
+   summate_fourier
 """
 
 import numpy as np
@@ -160,6 +161,29 @@ def summate_fourier(
     const double[:, :] pos,
     num_threads=None,
 ):
+    """
+    Fourier summator for periodic random field generation using the fourier method.
+
+    Parameters
+    ----------
+    spectrum_factor : double[:, :]
+        spectrum factors
+    modes : double[:, :]
+        modes from the covariance model
+    z_1 : double[:]
+        random samples from a normal distribution
+    z_2 : double[:]
+        random samples from a normal distribution
+    pos : double[:, :]
+        the position (d,n) tuple with d dimensions and n points.
+    num_threads : None or int, optional
+        number of OpenMP threads, default: None
+
+    Returns
+    -------
+    summed_modes : double[:]
+        summed random modes
+    """
     cdef int i, j, d
     cdef double phase
     cdef int dim = pos.shape[0]
