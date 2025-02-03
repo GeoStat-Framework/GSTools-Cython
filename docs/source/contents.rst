@@ -7,6 +7,6 @@ Contents
    :maxdepth: 3
 
    index
-   tutorials
    api
+   authors
    changelog

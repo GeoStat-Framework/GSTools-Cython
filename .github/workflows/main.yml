@@ -22,16 +22,15 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - name: Set up Python 3.9
+      - name: Set up Python 3.11
         uses: actions/setup-python@v5
         with:
-          python-version: 3.9
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -v --editable '.[lint,test]'
-          pip install "coveralls>=3.0.0"
 
       - name: black check
         run: |
@@ -47,18 +46,11 @@ jobs:
 
       - name: pylint check
         run: |
-          python -m pylint --max-positional-arguments 20 src/gstools/
+          python -m pylint src/gstools_cython/
 
       - name: cython-lint check
         run: |
-          cython-lint src/gstools/
-
-      - name: coveralls check
-        run: |
-          python -m pytest --cov gstools --cov-report term-missing -v tests/
-          python -m coveralls --service=github
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          cython-lint src/gstools_cython/
 
   build_wheels:
     name: wheels for ${{ matrix.os }}
@@ -75,16 +67,17 @@ jobs:
           fetch-depth: "0"
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.18.0
+        uses: pypa/cibuildwheel@v2.22.0
         with:
-          output-dir: dist
+          output-dir: dist-wheel-${{ matrix.os }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
-          path: ./dist/*.whl
+          name: dist-wheel-${{ matrix.os }}
+          path: ./dist-wheel-${{ matrix.os }}/*.whl
 
   build_sdist:
-    name: sdist on ${{ matrix.os }} with py ${{ matrix.ver.py }} numpy${{ matrix.ver.np }} scipy${{ matrix.ver.sp }}
+    name: sdist on ${{ matrix.os }} with py ${{ matrix.ver.py }} numpy${{ matrix.ver.np }}
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -92,19 +85,20 @@ jobs:
         os: [ubuntu-latest, windows-latest, macos-13, macos-14]
         # https://github.com/scipy/oldest-supported-numpy/blob/main/setup.cfg
         ver:
-          - { py: "3.8", np: "==1.20.0", sp: "==1.5.4" }
-          - { py: "3.9", np: "==1.20.0", sp: "==1.5.4" }
-          - { py: "3.10", np: "==1.21.6", sp: "==1.7.2" }
-          - { py: "3.11", np: "==1.23.2", sp: "==1.9.2" }
-          - { py: "3.12", np: "==1.26.2", sp: "==1.11.2" }
-          - { py: "3.12", np: ">=2.0.0rc1", sp: ">=1.13.0" }
+          - { py: "3.8", np: "==1.20.0" }
+          - { py: "3.9", np: "==1.20.0" }
+          - { py: "3.10", np: "==1.21.6" }
+          - { py: "3.11", np: "==1.23.2" }
+          - { py: "3.12", np: "==1.26.2" }
+          - { py: "3.13", np: "==2.1.0" }
+          - { py: "3.13", np: ">=2.1.0" }
         exclude:
           - os: macos-14
-            ver: { py: "3.8", np: "==1.20.0", sp: "==1.5.4" }
+            ver: { py: "3.8", np: "==1.20.0" }
           - os: macos-14
-            ver: { py: "3.9", np: "==1.20.0", sp: "==1.5.4" }
+            ver: { py: "3.9", np: "==1.20.0" }
           - os: macos-14
-            ver: { py: "3.10", np: "==1.21.6", sp: "==1.7.2" }
+            ver: { py: "3.10", np: "==1.21.6" }
     steps:
       - uses: actions/checkout@v4
         with:
@@ -120,7 +114,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install build
 
-      - name: Install GSTools
+      - name: Install GSTools-Cython
         env:
           GSTOOLS_BUILD_PARALLEL: 1
         run: |
@@ -128,27 +122,62 @@ jobs:
 
       - name: Run tests
         run: |
-          pip install "numpy${{ matrix.ver.np }}" "scipy${{ matrix.ver.sp }}"
+          pip install "numpy${{ matrix.ver.np }}"
           python -m pytest -v tests/
 
       - name: Build sdist
         run: |
           # PEP 517 package builder from pypa
-          python -m build --sdist --outdir dist .
+          python -m build --sdist --outdir dist-sdist .
 
-      - uses: actions/upload-artifact@v3
-        if: matrix.os == 'ubuntu-latest' && matrix.ver.py == '3.9'
+      - uses: actions/upload-artifact@v4
+        if: matrix.os == 'ubuntu-latest' && matrix.ver.py == '3.11'
         with:
-          path: dist/*.tar.gz
+          name: dist-sdist
+          path: dist-sdist/*.tar.gz
+
+  coverage:
+    name: coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: '0'
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "coveralls>=3.0.0"
+
+      - name: Install GSTools-Cython
+        env:
+          GSTOOLS_CY_COV: 1
+        run: |
+          pip install -v --editable .[test]
+
+      - name: Run tests
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pip install "numpy${{ matrix.ver.np }}"
+          python -m pytest --cov gstools_cython --cov-report term-missing -v tests/
+          python -m coveralls --service=github
 
   upload_to_pypi:
     needs: [build_wheels, build_sdist]
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: dist-*
+          merge-multiple: true
           path: dist
 
       - name: Publish to Test PyPI
