@@ -146,7 +146,7 @@ target-version = [
 # Switch to using build
 build-frontend = "build"
 # Disable building py3.6/7
-skip = ["cp36-*", "cp37-*", "pp38-macosx_arm64"]
+skip = ["cp36-*", "cp37-*", "pp38-macosx_arm64", "*-win32", "*-manylinux_i686"]
 # Run the package tests using `pytest`
 test-extras = "test"
 test-command = "pytest -v {package}/tests"
