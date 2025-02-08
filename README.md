@@ -1,6 +1,6 @@
 # Welcome to GSTools-Cython
 [![GMD](https://img.shields.io/badge/GMD-10.5194%2Fgmd--15--3161--2022-orange)](https://doi.org/10.5194/gmd-15-3161-2022)
-[![Build Status](https://github.com/GeoStat-Framework/GSTools-Cython/workflows/Continuous%20Integration/badge.svg?branch=main)](https://github.com/GeoStat-Framework/GSTools-Cython/actions)
+[![Continuous Integration](https://github.com/GeoStat-Framework/GSTools-Cython/actions/workflows/main.yml/badge.svg)](https://github.com/GeoStat-Framework/GSTools-Cython/actions/workflows/main.yml)
 [![Coverage Status](https://coveralls.io/repos/github/GeoStat-Framework/GSTools-Cython/badge.svg?branch=main)](https://coveralls.io/github/GeoStat-Framework/GSTools-Cython?branch=main)
 [![Documentation Status](https://readthedocs.org/projects/gstools-cython/badge/?version=latest)](https://geostat-framework.readthedocs.io/projects/gstools-cython/en/stable/?badge=stable)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
@@ -13,7 +13,6 @@
 <p align="center">
 <a href="https://github.com/GeoStat-Framework/GSTools/discussions"><img src="https://img.shields.io/badge/GitHub-Discussions-f6f8fa?logo=github&style=flat" alt="GH-Discussions"/></a>
 <a href="mailto:info@geostat-framework.org"><img src="https://img.shields.io/badge/Email-GeoStat--Framework-468a88?style=flat&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbDpzcGFjZT0icHJlc2VydmUiIHdpZHRoPSI1MDAiIGhlaWdodD0iNTAwIj48cGF0aCBkPSJNNDQ4IDg4SDUyYy0yNyAwLTQ5IDIyLTQ5IDQ5djIyNmMwIDI3IDIyIDQ5IDQ5IDQ5aDM5NmMyNyAwIDQ5LTIyIDQ5LTQ5VjEzN2MwLTI3LTIyLTQ5LTQ5LTQ5em0xNiA0OXYyMjZsLTIgNy0xMTUtMTE2IDExNy0xMTd6TTM2IDM2M1YxMzdsMTE3IDExN0wzOCAzNzBsLTItN3ptMjE5LTYzYy0zIDMtNyAzLTEwIDBMNjYgMTIxaDM2OHptLTc5LTIzIDQ2IDQ2YTM5IDM5IDAgMCAwIDU2IDBsNDYtNDYgMTAxIDEwMkg3NXoiIHN0eWxlPSJmaWxsOiNmNWY1ZjU7ZmlsbC1vcGFjaXR5OjEiLz48L3N2Zz4=" alt="Email"/></a>
-<a href="https://twitter.com/GSFramework"><img alt="Twitter Follow" src="https://img.shields.io/twitter/follow/GSFramework?style=social"></a>
 </p>
 
 
