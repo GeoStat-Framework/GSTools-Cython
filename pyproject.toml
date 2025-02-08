@@ -1,7 +1,7 @@
 [build-system]
 requires = [
     "setuptools>=64",
-    "setuptools<72.2; python_version < '3.9' and implementation_name == 'pypy'", # https://github.com/pypa/distutils/issues/283
+    "setuptools<72.2; implementation_name == 'pypy'", # https://github.com/pypa/distutils/issues/283
     "setuptools_scm>=7",
     "numpy>=2.0.0rc1; python_version >= '3.9'",
     "oldest-supported-numpy; python_version < '3.9'",
@@ -146,7 +146,7 @@ target-version = [
 # Switch to using build
 build-frontend = "build"
 # Disable building py3.6/7
-skip = ["cp36-*", "cp37-*"]
+skip = ["cp36-*", "cp37-*", "pp38-macosx_arm64"]
 # Run the package tests using `pytest`
 test-extras = "test"
 test-command = "pytest -v {package}/tests"
