@@ -1,6 +1,7 @@
 [build-system]
 requires = [
     "setuptools>=64",
+    "setuptools<72.2; python_version < '3.9' and implementation_name == 'pypy'", # https://github.com/pypa/distutils/issues/283
     "setuptools_scm>=7",
     "numpy>=2.0.0rc1; python_version >= '3.9'",
     "oldest-supported-numpy; python_version < '3.9'",
