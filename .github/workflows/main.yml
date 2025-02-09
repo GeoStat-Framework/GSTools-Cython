@@ -66,20 +66,8 @@ jobs:
         with:
           fetch-depth: "0"
 
-      - name: Set up QEMU
-        if: runner.os == 'Linux' && runner.arch == 'X64'
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: all
-          # This should be temporary
-          # xref https://github.com/docker/setup-qemu-action/issues/188
-          # xref https://github.com/tonistiigi/binfmt/issues/215
-          image: tonistiigi/binfmt:qemu-v8.1.5
-
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.22.0
-        env:
-          CIBW_ARCHS_LINUX: ${{ runner.arch == 'X64' && 'auto ppc64le s390x' || 'auto armv7l' }}
         with:
           output-dir: dist-wheel-${{ matrix.os }}
 
