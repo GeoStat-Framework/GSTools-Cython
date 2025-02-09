@@ -143,6 +143,8 @@ target-version = [
 [tool.cibuildwheel]
 # Switch to using build
 build-frontend = "build"
+# explicitly enable pypy
+enable = ["pypy"]
 # Disable building py3.6/7/8, pp3.8, 32bit
 skip = ["cp36-*", "cp37-*", "cp38-*", "pp38-*", "*-win32", "*_i686"]
 # Run the package tests using `pytest`
