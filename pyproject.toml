@@ -1,16 +1,15 @@
 [build-system]
 requires = [
     "setuptools>=64",
-    "setuptools<72.2; implementation_name == 'pypy'", # https://github.com/pypa/distutils/issues/283
     "setuptools_scm>=7",
-    "numpy>=2.0.0rc1",
-    "Cython>=3.0.10,<3.1.0",
+    "numpy>=2",
+    "Cython>=3",
     "extension-helpers>=1",
 ]
 build-backend = "setuptools.build_meta"
 
 [project]
-requires-python = ">=3.9"
+requires-python = ">=3.10"
 name = "gstools_cython"
 description = "Cython backend for GSTools."
 authors = [
@@ -33,11 +32,11 @@ classifiers = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3 :: Only",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: GIS",
     "Topic :: Scientific/Engineering :: Hydrology",
@@ -58,7 +57,7 @@ doc = [
 ]
 test = [
     "pytest-cov>=3",
-     "Cython>=3.0.10,<3.1.0",
+     "Cython>=3",
 ]
 lint = [
     "black>=24",
@@ -90,11 +89,11 @@ multi_line_output = 3
 
 [tool.black]
 target-version = [
-    "py39",
     "py310",
     "py311",
     "py312",
     "py313",
+    "py314",
 ]
 
 [tool.coverage]
@@ -145,8 +144,8 @@ target-version = [
 build-frontend = "build"
 # explicitly enable pypy
 enable = ["pypy"]
-# Disable building py3.6/7/8, pp3.8, 32bit linux
-skip = ["cp36-*", "cp37-*", "cp38-*", "pp38-*", "*_i686"]
+# Disable building py3.8/9, 32bit linux
+skip = ["cp38-*", "cp39-*", "*_i686"]
 # Run the package tests using `pytest`
 test-extras = "test"
 test-command = "pytest -v {package}/tests"
