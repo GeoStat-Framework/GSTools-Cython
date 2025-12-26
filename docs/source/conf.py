@@ -203,11 +203,13 @@ latex_logo = "pics/gstools_150.png"
 # latex_show_urls = 'footnote'
 # http://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-latex-output
 latex_elements = {
-    "preamble": r"""
+    "preamble": (
+        r"""
 \setcounter{secnumdepth}{1}
 \setcounter{tocdepth}{2}
 \pagestyle{fancy}
-""",
+"""
+    ),
     "pointsize": "10pt",
     "papersize": "a4paper",
     "fncychap": "\\usepackage[Glenn]{fncychap}",

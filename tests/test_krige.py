@@ -44,6 +44,11 @@ class TestKrige(unittest.TestCase):
         )
         np.testing.assert_allclose(field, self.field_ref)
         np.testing.assert_allclose(error, self.error_ref)
+        field_threads, error_threads = gs_cy.krige.calc_field_krige_and_variance(
+            self.krig_mat, self.krig_vecs, self.cond, num_threads=2
+        )
+        np.testing.assert_allclose(field_threads, self.field_ref)
+        np.testing.assert_allclose(error_threads, self.error_ref)
 
     def test_calc_field_krige(self):
         field = gs_cy.krige.calc_field_krige(self.krig_mat, self.krig_vecs, self.cond)

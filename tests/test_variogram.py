@@ -34,6 +34,58 @@ class TestVariogram(unittest.TestCase):
         self.assertAlmostEqual(gamma[1, len(gamma[0]) // 2], var, places=2)
         self.assertAlmostEqual(gamma[1, -1], var, places=2)
 
+    def test_directional_separate_dirs(self):
+        pos = np.array(((0.0, 1.0), (0.0, 0.0)), dtype=np.double)
+        dirs = np.array(((1.0, 0.0), (1.0, 0.0)), dtype=np.double)
+        field = np.array(((1.0, 2.0),), dtype=np.double)
+        bins = np.array((0.0, 2.0), dtype=np.double)
+
+        _, counts = gs_cy.variogram.directional(
+            field, bins, pos, dirs, angles_tol=np.pi, separate_dirs=True
+        )
+
+        self.assertEqual(counts[0, 0], 1)
+        self.assertEqual(counts[1, 0], 0)
+
+    def test_directional_bandwidth_cressie(self):
+        pos = np.array(((0.0, 0.0, 1.0), (0.0, 1.0, 0.0)), dtype=np.double)
+        dirs = np.array(((1.0, 0.0),), dtype=np.double)
+        field = np.array(((1.0, 2.0, 5.0),), dtype=np.double)
+        bins = np.array((0.0, 2.0), dtype=np.double)
+
+        gamma, counts = gs_cy.variogram.directional(
+            field,
+            bins,
+            pos,
+            dirs,
+            angles_tol=np.pi,
+            bandwidth=0.5,
+            estimator_type="c",
+        )
+
+        self.assertEqual(counts[0, 0], 1)
+        f_diff = field[0, 2] - field[0, 0]
+        raw = np.sqrt(abs(f_diff))
+        expected = 0.5 * raw**4 / (0.457 + 0.494 + 0.045)
+        self.assertAlmostEqual(gamma[0, 0], expected, places=6)
+
+    def test_directional_error_checks(self):
+        pos = np.array(((0.0, 1.0), (0.0, 1.0)), dtype=np.double)
+        dirs = np.array(((1.0, 0.0),), dtype=np.double)
+        bins = np.array((0.0, 1.0), dtype=np.double)
+        field = np.array(((1.0, 2.0),), dtype=np.double)
+
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.directional(field[:, :1], bins, pos, dirs)
+
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.directional(
+                field, np.array((0.0,), dtype=np.double), pos, dirs
+            )
+
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.directional(field, bins, pos, dirs, angles_tol=0.0)
+
     def test_unstructured(self):
         x = np.arange(1, 11, 1, dtype=np.double)
         z = np.array(
@@ -72,6 +124,46 @@ class TestVariogram(unittest.TestCase):
         self.assertAlmostEqual(gamma[0], var, places=2)
         self.assertAlmostEqual(gamma[len(gamma) // 2], var, places=2)
         self.assertAlmostEqual(gamma[-1], var, places=2)
+
+    def test_unstructured_haversine(self):
+        pos = np.array(((0.0, 0.0), (0.0, 90.0)), dtype=np.double)
+        field = np.array(((1.0, 3.0),), dtype=np.double)
+        bins = np.array((0.0, 2.0), dtype=np.double)
+
+        gamma, counts = gs_cy.variogram.unstructured(
+            field, bins, pos, distance_type="h"
+        )
+
+        self.assertEqual(counts[0], 1)
+        self.assertAlmostEqual(gamma[0], 2.0, places=6)
+
+    def test_unstructured_num_threads(self):
+        pos = np.array(((0.0, 1.0, 2.0),), dtype=np.double)
+        field = np.array(((1.0, 3.0, 2.0),), dtype=np.double)
+        bins = np.array((0.0, 2.0), dtype=np.double)
+
+        gamma_default, counts_default = gs_cy.variogram.unstructured(field, bins, pos)
+        gamma_threads, counts_threads = gs_cy.variogram.unstructured(
+            field, bins, pos, num_threads=2
+        )
+
+        np.testing.assert_allclose(gamma_threads, gamma_default)
+        np.testing.assert_array_equal(counts_threads, counts_default)
+
+    def test_unstructured_error_checks(self):
+        pos = np.array(((0.0, 1.0), (0.0, 1.0)), dtype=np.double)
+        field = np.array(((1.0, 2.0),), dtype=np.double)
+        bins = np.array((0.0, 1.0), dtype=np.double)
+
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.unstructured(field[:, :1], bins, pos)
+
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.unstructured(field, np.array((0.0,), dtype=np.double), pos)
+
+        pos_bad = np.array(((0.0, 1.0), (0.0, 1.0), (0.0, 1.0)), dtype=np.double)
+        with self.assertRaises(ValueError):
+            gs_cy.variogram.unstructured(field, bins, pos_bad, distance_type="h")
 
     def test_structured(self):
         z = np.array(

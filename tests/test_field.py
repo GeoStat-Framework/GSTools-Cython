@@ -69,6 +69,8 @@ class TestField(unittest.TestCase):
         )
         summed = gs_cy.field.summate(cov_samples, z_1, z_2, pos)
         np.testing.assert_allclose(summed_modes, summed)
+        summed_threads = gs_cy.field.summate(cov_samples, z_1, z_2, pos, num_threads=2)
+        np.testing.assert_allclose(summed_modes, summed_threads)
 
     def test_summate_incompr(self):
         # x = y = np.linspace(0,1,3)
