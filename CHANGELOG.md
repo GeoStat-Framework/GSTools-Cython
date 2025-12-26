@@ -4,6 +4,8 @@ All notable changes to **GSTools-Cython** will be documented in this file.
 
 ## [1.2.0] - 2025-12
 
+See [#11](https://github.com/GeoStat-Framework/GSTools-Cython/pull/11)
+
 ### Changes
 
 - add support for Python 3.14 (incl. free-threaded support)
