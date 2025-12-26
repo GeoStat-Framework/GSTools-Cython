@@ -146,9 +146,7 @@ class TestVariogram(unittest.TestCase):
             gs_cy.variogram.unstructured(field[:, :1], bins, pos)
 
         with self.assertRaises(ValueError):
-            gs_cy.variogram.unstructured(
-                field, np.array((0.0,), dtype=np.double), pos
-            )
+            gs_cy.variogram.unstructured(field, np.array((0.0,), dtype=np.double), pos)
 
         pos_bad = np.array(((0.0, 1.0), (0.0, 1.0), (0.0, 1.0)), dtype=np.double)
         with self.assertRaises(ValueError):
