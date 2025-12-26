@@ -141,8 +141,8 @@ target-version = [
 build-frontend = "build"
 # explicitly enable pypy
 enable = ["pypy"]
-# Disable building py3.8/9, 32bit linux
-skip = ["cp38-*", "cp39-*", "*_i686"]
+# Disable building py3.8/9, 32bit linux, and arm64 windows wheels for python 3.10 (no numpy support)
+skip = ["cp38-*", "cp39-*", "*_i686", "cp310-win_arm64"]
 # Run the package tests using `pytest`
 test-extras = "test"
 test-command = "pytest -v {package}/tests"
