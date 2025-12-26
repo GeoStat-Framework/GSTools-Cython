@@ -161,7 +161,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          pip install "numpy${{ matrix.ver.np }}"
           python -m pytest --cov gstools_cython --cov-report term-missing -v tests/
           python -m coveralls --service=github
 
