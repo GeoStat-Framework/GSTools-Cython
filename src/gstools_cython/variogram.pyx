@@ -253,7 +253,7 @@ def directional(
         counts of samples per bin and direciton
     """
     if pos.shape[1] != f.shape[1]:
-        raise ValueError(f'len(pos) = {pos.shape[1]} != len(f) = {f.shape[1])}')
+        raise ValueError(f'len(pos) = {pos.shape[1]} != len(f) = {f.shape[1]}')
 
     if bin_edges.shape[0] < 2:
         raise ValueError('len(bin_edges) too small')
@@ -359,7 +359,7 @@ def unstructured(
             raise ValueError(f'Haversine: dim = {dim} != 2')
 
     if pos.shape[1] != f.shape[1]:
-        raise ValueError(f'len(pos) = {pos.shape[1]} != len(f) = {f.shape[1])}')
+        raise ValueError(f'len(pos) = {pos.shape[1]} != len(f) = {f.shape[1]}')
 
     if bin_edges.shape[0] < 2:
         raise ValueError('len(bin_edges) too small')
