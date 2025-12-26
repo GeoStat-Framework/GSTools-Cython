@@ -153,6 +153,7 @@ jobs:
       - name: Install GSTools-Cython
         env:
           GSTOOLS_CY_COV: 1
+          GSTOOLS_BUILD_PARALLEL: 1
         run: |
           pip install -v --editable .[test]
 

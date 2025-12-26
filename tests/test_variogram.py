@@ -137,6 +137,19 @@ class TestVariogram(unittest.TestCase):
         self.assertEqual(counts[0], 1)
         self.assertAlmostEqual(gamma[0], 2.0, places=6)
 
+    def test_unstructured_num_threads(self):
+        pos = np.array(((0.0, 1.0, 2.0),), dtype=np.double)
+        field = np.array(((1.0, 3.0, 2.0),), dtype=np.double)
+        bins = np.array((0.0, 2.0), dtype=np.double)
+
+        gamma_default, counts_default = gs_cy.variogram.unstructured(field, bins, pos)
+        gamma_threads, counts_threads = gs_cy.variogram.unstructured(
+            field, bins, pos, num_threads=2
+        )
+
+        np.testing.assert_allclose(gamma_threads, gamma_default)
+        np.testing.assert_array_equal(counts_threads, counts_default)
+
     def test_unstructured_error_checks(self):
         pos = np.array(((0.0, 1.0), (0.0, 1.0)), dtype=np.double)
         field = np.array(((1.0, 2.0),), dtype=np.double)
